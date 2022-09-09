@@ -1,17 +1,10 @@
-function countdown () {
-    let timer = document.getElementById('timer');
-    console.log(timer.textContent)
-    let counter = parseInt(timer.textContent)
-    setInterval( () => {
-        if (counter > 0) {
-            timer.textContent = counter;
-            counter--;
-        }
-        if (counter === 0) {
-            alert('Вы победили в конкурсе')
-            counter = 59;
-        }
-    }, 1000)
+const timer = function () {
+    let time = document.getElementById('timer')
+    time.textContent -= 1;
+    if (time.textContent == 0) {
+        alert('u won');
+        clearInterval(countdown)
+    }
 }
 
-countdown()
+const countdown = setInterval(timer, 1000)
