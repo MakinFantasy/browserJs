@@ -1,44 +1,59 @@
-const imageList = document.querySelectorAll('.slider__item');
-const arrows = document.querySelectorAll('.slider__arrow')
-const dots = Array.from(document.querySelectorAll('.slider__dot'))
+const images = Array.from(document.querySelectorAll('.slider__item'));
+const arrows = document.querySelectorAll('.slider__arrow');
+const dots = Array.from(document.querySelectorAll('.slider__dot'));
+const arrowNext = arrows[1]
+const arrowPrev = arrows[0]
+const a = Array.from(images).findIndex(img => img.className.includes('slider__item_active'))
+dots[a].classList.add('slider__dot_active')
 
-for (const arrow of arrows) {
-    arrow.addEventListener('click', () => {
-        let activeImage = Array.from(imageList).findIndex(element => element.className.includes('slider__item_active'));
-        imageList[activeImage].classList.remove('slider__item_active');
-        dots[activeImage].classList.remove('slider__dot_active')
-        if (arrow.className.includes('slider__arrow_next')) {
-            activeImage++;
-            if (activeImage >= imageList.length) {
-                activeImage = 0;
-            }
-            imageList[activeImage].classList.add('slider__item_active')
-            dots[activeImage].classList.toggle('slider__dot_active')
-        }
-        if (arrow.className.includes('slider__arrow_prev')) {
-            activeImage--;
-            if (activeImage < 0) {
-                activeImage = imageList.length - 1;
-            }
-            imageList[activeImage].classList.add('slidet__item_active')
-            dots[activeImage].classList.add('slider__dot_active')
-        }
-    })
+
+
+function setActiveImage (index) {
+    const active = function () {
+        const activeImage = (item) => item.classList.contains('slider__item_active');
+        return images.findIndex(activeImage);
+    };
+    const activeIndex = active()
+    images[activeIndex].classList.remove('slider__item_active');
+    dots[activeIndex].classList.remove('slider__dot_active');
+    if (index >= images.length) {
+        index = 0;
+        images[index].classList.add('slider__item_active');
+        dots[index].classList.add('slider__dot_active');
+    }
+    if (index < 0) {
+        index = (images.length - 1);
+        images[index].classList.add('slider__item_active');
+        dots[index].classList.add('slider__dot_active');
+    } else {
+        images[index].classList.add('slider__item_active');
+        dots[index].classList.add('slider__dot_active');
+    }
 }
+
+
+arrowNext.addEventListener('click', () => {
+    let activeIndex = Array.from(images).findIndex(img => img.className.includes('slider__item_active'));
+    setActiveImage(activeIndex + 1)
+})
+
+arrowPrev.addEventListener('click', () => {
+    let activeIndex = Array.from(images).findIndex(img => img.className.includes('slider__item_active'));
+    setActiveImage(activeIndex - 1)
+})
+
 
 for (const dot of dots) {
     dot.addEventListener('click', () => {
-        let dotIndex = dots.indexOf(dot)
-        dots.forEach((dot) => {
+        const dotIndex = dots.indexOf(dot);
+        dots.forEach( (dot) => {
             if (dot.className.includes('slider__dot_active')) {
                 dot.classList.remove('slider__dot_active')
             }
         })
-        console.log(dotIndex)
-        let active = Array.from(imageList).findIndex(element => element.className.includes('slider__item_active'));
-        console.log(active)
-        imageList[active].classList.remove('slider__item_active');
-        imageList[dotIndex].classList.add('slider__item_active');
-        dots[dotIndex].classList.add('slider__dot_active')
+        const activeImgIndex = Array.from(images).findIndex(image => image.className.includes('slider__item_active'))
+        images[activeImgIndex].classList.remove('slider__item_active');
+        images[dotIndex].classList.add('slider__item_active');
+        dots[dotIndex].classList.add('slider__dot_active');
     })
 }
